@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QGridLayout
 import sys
+from calulate import calculate
 
 
 class Calculator(QWidget):
@@ -22,7 +23,7 @@ class Calculator(QWidget):
             nb_buttons.append(QPushButton(str(i), self))
         
         op_buttons:list[QPushButton] = []
-        for i in ['^', '.', '+', '-', '/', 'C', 'CE','=']:
+        for i in ['(', ')', '+', '-', 'x', '/', '^', '.', 'cos', 'sin', 'e', 'C', 'CE','=']:
             op_buttons.append(QPushButton(i, self))
 
         #Placement
@@ -59,12 +60,18 @@ class Calculator(QWidget):
         op_buttons[2].clicked.connect(lambda : self.add(op_buttons[2].text()))
         op_buttons[3].clicked.connect(lambda : self.add(op_buttons[3].text()))
         op_buttons[4].clicked.connect(lambda : self.add(op_buttons[4].text()))
-        op_buttons[5].clicked.connect(self.clear)
-        op_buttons[6].clicked.connect(self.clear_all)
-        op_buttons[7].clicked.connect(self.calculate)
+        op_buttons[5].clicked.connect(lambda : self.add(op_buttons[5].text()))
+        op_buttons[6].clicked.connect(lambda : self.add(op_buttons[6].text()))
+        op_buttons[7].clicked.connect(lambda : self.add(op_buttons[7].text()))
+        op_buttons[8].clicked.connect(lambda : self.add(op_buttons[8].text()+'('))  #cos
+        op_buttons[9].clicked.connect(lambda : self.add(op_buttons[9].text()+'('))  #sin
+        op_buttons[10].clicked.connect(lambda : self.add(op_buttons[10].text()))
+        op_buttons[11].clicked.connect(self.clear)
+        op_buttons[12].clicked.connect(self.clear_all)
+        op_buttons[13].clicked.connect(self.calculate)
 
     def add(self, string:str):
-        if self.operation == "0" and string.isdigit():
+        if self.operation == "0" and string != '.':
             self.operation = string
         else:
             self.operation += string
@@ -82,7 +89,14 @@ class Calculator(QWidget):
         self.display.setText(self.operation)
     
     def calculate(self):
-        pass
+        result = calculate(self.operation)
+        if result:
+            self.display.setText(result)
+            self.operation = "0"
+        else:
+            self.display.setText("Error")
+            self.operation = "0"
+
 
 if '__main__' == __name__:
     app = QApplication(sys.argv)
