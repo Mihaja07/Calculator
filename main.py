@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLineEdit, QGridLayout
+from PyQt5.QtGui import QIcon
 import sys
 from calulate import calculate
 
@@ -8,9 +9,18 @@ class Calculator(QWidget):
         super().__init__()
         self.operation = "0"
         self.setWindowTitle("Calculator")
+        self.setWindowIcon(QIcon('icon.ico'))
         self.init_UI()
+        self.apply_style()
         self.show()
     
+    def apply_style(self):
+        try:
+            with open('style.qss', 'r') as file:
+                self.setStyleSheet(file.read())
+        except Exception as e:
+            print(e)
+
     def init_UI(self):
         layout = QGridLayout(self)
         
@@ -20,11 +30,18 @@ class Calculator(QWidget):
         #Buttons
         nb_buttons:list[QPushButton] = []
         for i in range(0, 10):
-            nb_buttons.append(QPushButton(str(i), self))
+            button = QPushButton(str(i), self)
+            button.setObjectName("number")
+            nb_buttons.append(button)
         
         op_buttons:list[QPushButton] = []
         for i in ['(', ')', '+', '-', 'x', '/', '^', '.', 'cos', 'sin', 'e', 'C', 'CE','=']:
-            op_buttons.append(QPushButton(i, self))
+            button = QPushButton(i, self)
+            if i == '=':
+                button.setObjectName("equal")
+            else:
+                button.setObjectName("operation")
+            op_buttons.append(button)
 
         #Placement
         layout.addWidget(self.display, 0, 0, 1, 3)

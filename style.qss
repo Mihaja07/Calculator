@@ -1,0 +1,28 @@
+QWidget{
+    background: #436796;
+}
+
+QLineEdit{
+    border: 2px solid #29405e;
+    border-radius: 5px;
+    background: #344e70;
+}
+
+QPushButton{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 2px solid #29405e;
+    border-radius: 5px;
+    background: #2b4a75;
+}
+QPushButton#equal{
+    background: #0d53d3;
+}
+QPushButton#number{
+    background: #6883b6;
+}
+QPushButton#operation{
+    background: #4685b9;
+}

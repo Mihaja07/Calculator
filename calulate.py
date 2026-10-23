@@ -1,4 +1,4 @@
-from math import *
+from math import cos, sin, exp
 
 def calculate(string:str):
     #opened parenthesis
@@ -7,6 +7,8 @@ def calculate(string:str):
     #closed parenthesis:
     if string.count('(') > string.count(')'):
         string = string + ')' * (string.count('(') - string.count(')'))
+    #Multiplication
+    string = string.replace('x', '*')
     #exponent
     index = 0
     while string.count('e') > string.count('exp'):
@@ -17,14 +19,28 @@ def calculate(string:str):
                 break
             last_digit_index = i
         string = string[:index+1] + "xp(" + string[index+1:last_digit_index+1] + ")" + string[last_digit_index+1:]
-        if index - 1 > 0:
+        if index - 1 >= 0:
             if string[index-1].isdigit():
                 string = string[:index] + '*' + string[index:]
+    #cos
+    index = 0
+    for i in range(0, string.count('cos')):
+        index = string.find('cos', index)
+        if index - 1 >= 0:
+            if string[index-1].isdigit() or string[index-1] not in ('+', '-', '/', 'x'):
+                string = string[:index] + '*' + string[index:]
+    #sin
+    index = 0
+    for i in range(0, string.count('sin')):
+        index = string.find('sin', index)
+        if index - 1 >= 0:
+            if string[index-1].isdigit() or string[index-1] not in ('+', '-', '/', 'x'):
+                string = string[:index] + '*' + string[index:]
     #power
-    string.replace('^', '**')
+    string = string.replace('^', '**')
+    
     print(string)
-    #Multiplication
-    string.replace('x', '*')
+
     try:
         result = eval(string)
         return str(result)
